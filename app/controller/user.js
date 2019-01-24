@@ -5,7 +5,7 @@ var checkUser = require('../utils/checkUser')
 exports.login = async (req,res)=>{ 
   let md5 = crypto.createHash('md5');
   let username = req.body.username
-  let password = md5.update(req.body.password).digest('hex');//加密后的密码
+  let password = md5.update(req.body.password||'').digest('hex');//加密后的密码
   console.log(password)
   let user = await dao.get('user')
   if(username==user[0].username&&password==user[0].password){
