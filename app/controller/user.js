@@ -2,23 +2,29 @@ const fs = require('fs')
 const dao = require('../db/dao')
 var crypto = require('crypto');
 var checkUser = require('../utils/checkUser')
-exports.login = async (req,res)=>{ 
-  let md5 = crypto.createHash('md5');
+const authConf = require('../config/auth')
+const UserAccessService = require('../service/userAccess')
+exports.login = async (req, res) => {
+
+  // let md5 = crypto.createHash('md5');
   let username = req.body.username
-  let password = md5.update(req.body.password||'').digest('hex');//加密后的密码
+  let password = req.body.password
   console.log(password)
-  let user = await dao.get('user')
-  if(username==user[0].username&&password==user[0].password){
-    res.json({
-      data:1,
-      msg:"成功"
-    })
-  }else{
-    res.json({
-      data: 0,
-      msg:"失败"
-    })
-  }
+
+  const result = await UserAccessService.login(username, req.body.password)
+  res.json(result)
+  // let user = await dao.get('user')
+  // if (username == user[0].username && password == user[0].password) {
+  //   res.json({
+  //     data: 1,
+  //     msg: "成功"
+  //   })
+  // } else {
+  //   res.json({
+  //     data: 0,
+  //     msg: "失败"
+  //   })
+  // }
 }
 
 exports.updatePassword = async (req, res) => {
@@ -30,10 +36,10 @@ exports.updatePassword = async (req, res) => {
   let passwordOld = md51.update(req.body.passwordOld).digest('hex');//加密后的密码
   let passwordNew = md52.update(req.body.passwordNew).digest('hex');//加密后的密码
   let ret
-  if(user.username == username&& user.password == passwordOld){
+  if (user.username == username && user.password == passwordOld) {
     await dao.update('user', 0, { username: username, password: passwordNew })
     ret = 1
-  }else{
+  } else {
     ret = 0
   }
   res.json({
