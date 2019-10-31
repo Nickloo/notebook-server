@@ -1,30 +1,23 @@
-const fs = require('fs')
 const dao = require('../db/dao')
 var crypto = require('crypto');
-var checkUser = require('../utils/checkUser')
 const authConf = require('../config/auth')
-const UserAccessService = require('../service/userAccess')
 exports.login = async (req, res) => {
-
-  // let md5 = crypto.createHash('md5');
+  let md5 = crypto.createHash('md5');
   let username = req.body.username
-  let password = req.body.password
-  console.log(password)
+  let password = md5.update(req.body.password || '').digest(authConf.md5);//加密后的密码
 
-  const result = await UserAccessService.login(username, req.body.password)
-  res.json(result)
-  // let user = await dao.get('user')
-  // if (username == user[0].username && password == user[0].password) {
-  //   res.json({
-  //     data: 1,
-  //     msg: "成功"
-  //   })
-  // } else {
-  //   res.json({
-  //     data: 0,
-  //     msg: "失败"
-  //   })
-  // }
+  let user = await dao.get('user')
+  if (username == user[0].username && password == user[0].password) {
+    res.json({
+      data: 1,
+      msg: "成功"
+    })
+  } else {
+    res.json({
+      data: 0,
+      msg: "失败"
+    })
+  }
 }
 
 exports.updatePassword = async (req, res) => {
