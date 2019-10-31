@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // });
 
 // 校验token
-app.use(authToken)
+// app.use(authToken)
 
 app.use(router)
 // app.get('*', function (req, res) {

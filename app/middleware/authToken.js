@@ -1,7 +1,8 @@
 // var response = require('./response')
 // var common = require('./common')
-
+const response = require('../utils/response')
 module.exports = function (req, res, next) {
+  console.log('token');
   var token = req.body.token || req.query.token || req.headers['token']
   if (token) {
     console.log(token);
@@ -19,6 +20,6 @@ module.exports = function (req, res, next) {
   }
   else {
     next()
-    // res.send(response.err("没有传token,请先登录"))
+    // res.json(response.error({ msg: "123" }))
   }
 }

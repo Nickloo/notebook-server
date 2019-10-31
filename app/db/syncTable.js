@@ -1,10 +1,12 @@
 const User = require('../model/User.js')
+const Article = require('../model/Article.js')
 const crypto = require('crypto');
 // let md5 = crypto.createHash('md5');
 const md5 = require('md5')
 const authConf = require('../config/auth')
 const install = async () => {
-  await User.sync({ force: true })
+  // await User.sync({ force: true })
+  await Article.sync({ force: true })
 }
 
 const initData = async () => {
