@@ -5,7 +5,7 @@ var index = require('./controller/index.js')
 var article = require('./controller/article.js')
 var user = require('./controller/user.js')
 /* GET users listing. */
-router.get('/', index.index);
+// router.get('/', index.index);
 router.get('/articles', authToken, article.index);
 router.post('/articles', article.create);
 router.delete('/articles/:id', article.remove);
